@@ -181,9 +181,27 @@ static void _spi_init_direct(spi_t *obj, const spi_pinmap_t *pinmap)
     spiobj->spi = (SPIName)pinmap->peripheral;
     MBED_ASSERT(spiobj->spi != (SPIName)NC);
 
+#if defined(SPI_IP_VERSION_V2)
+    RCC_PeriphCLKInitTypeDef PeriphClkInit = {0};
+#endif
+
 #if defined SPI1_BASE
     // Enable SPI clock
     if (spiobj->spi == SPI_1) {
+#if defined(SPI_IP_VERSION_V2)
+        PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_SPI1;
+#if defined (RCC_SPI123CLKSOURCE_PLL)
+        PeriphClkInit.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL;
+#else
+        PeriphClkInit.Spi1ClockSelection = RCC_SPI1CLKSOURCE_SYSCLK;
+#endif
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
+            error("HAL_RCCEx_PeriphCLKConfig\n");
+        }
+#endif
+
+        __HAL_RCC_SPI1_FORCE_RESET();
+        __HAL_RCC_SPI1_RELEASE_RESET();
         __HAL_RCC_SPI1_CLK_ENABLE();
         spiobj->spiIRQ = SPI1_IRQn;
     }
@@ -191,6 +209,20 @@ static void _spi_init_direct(spi_t *obj, const spi_pinmap_t *pinmap)
 
 #if defined SPI2_BASE
     if (spiobj->spi == SPI_2) {
+#if defined(SPI_IP_VERSION_V2)
+        PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_SPI2;
+#if defined (RCC_SPI123CLKSOURCE_PLL)
+        PeriphClkInit.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL;
+#else
+        PeriphClkInit.Spi2ClockSelection = RCC_SPI2CLKSOURCE_SYSCLK;
+#endif
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
+            error("HAL_RCCEx_PeriphCLKConfig\n");
+        }
+#endif
+
+        __HAL_RCC_SPI2_FORCE_RESET();
+        __HAL_RCC_SPI2_RELEASE_RESET();
         __HAL_RCC_SPI2_CLK_ENABLE();
         spiobj->spiIRQ = SPI2_IRQn;
     }
@@ -198,6 +230,20 @@ static void _spi_init_direct(spi_t *obj, const spi_pinmap_t *pinmap)
 
 #if defined SPI3_BASE
     if (spiobj->spi == SPI_3) {
+#if defined(SPI_IP_VERSION_V2)
+        PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_SPI3;
+#if defined (RCC_SPI123CLKSOURCE_PLL)
+        PeriphClkInit.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL;
+#else
+        PeriphClkInit.Spi3ClockSelection = RCC_SPI3CLKSOURCE_SYSCLK;
+#endif
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
+            error("HAL_RCCEx_PeriphCLKConfig\n");
+        }
+#endif
+
+        __HAL_RCC_SPI3_FORCE_RESET();
+        __HAL_RCC_SPI3_RELEASE_RESET();
         __HAL_RCC_SPI3_CLK_ENABLE();
         spiobj->spiIRQ = SPI3_IRQn;
     }
@@ -205,6 +251,16 @@ static void _spi_init_direct(spi_t *obj, const spi_pinmap_t *pinmap)
 
 #if defined SPI4_BASE
     if (spiobj->spi == SPI_4) {
+#if defined(SPI_IP_VERSION_V2)
+        PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_SPI4;
+        PeriphClkInit.Spi45ClockSelection = RCC_SPI45CLKSOURCE_PCLK1;
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
+            error("HAL_RCCEx_PeriphCLKConfig\n");
+        }
+#endif
+
+        __HAL_RCC_SPI4_FORCE_RESET();
+        __HAL_RCC_SPI4_RELEASE_RESET();
         __HAL_RCC_SPI4_CLK_ENABLE();
         spiobj->spiIRQ = SPI4_IRQn;
     }
@@ -212,6 +268,16 @@ static void _spi_init_direct(spi_t *obj, const spi_pinmap_t *pinmap)
 
 #if defined SPI5_BASE
     if (spiobj->spi == SPI_5) {
+#if defined(SPI_IP_VERSION_V2)
+        PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_SPI5;
+        PeriphClkInit.Spi45ClockSelection = RCC_SPI45CLKSOURCE_PCLK1;
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
+            error("HAL_RCCEx_PeriphCLKConfig\n");
+        }
+#endif
+
+        __HAL_RCC_SPI5_FORCE_RESET();
+        __HAL_RCC_SPI5_RELEASE_RESET();
         __HAL_RCC_SPI5_CLK_ENABLE();
         spiobj->spiIRQ = SPI5_IRQn;
     }
@@ -219,6 +285,16 @@ static void _spi_init_direct(spi_t *obj, const spi_pinmap_t *pinmap)
 
 #if defined SPI6_BASE
     if (spiobj->spi == SPI_6) {
+#if defined(SPI_IP_VERSION_V2)
+        PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_SPI6;
+        PeriphClkInit.Spi6ClockSelection = RCC_SPI6CLKSOURCE_PCLK4;
+        if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK) {
+            error("HAL_RCCEx_PeriphCLKConfig\n");
+        }
+#endif
+
+        __HAL_RCC_SPI6_FORCE_RESET();
+        __HAL_RCC_SPI6_RELEASE_RESET();
         __HAL_RCC_SPI6_CLK_ENABLE();
         spiobj->spiIRQ = SPI6_IRQn;
     }
@@ -226,13 +302,14 @@ static void _spi_init_direct(spi_t *obj, const spi_pinmap_t *pinmap)
 
     // Configure the SPI pins
     pin_function(pinmap->mosi_pin, pinmap->mosi_function);
-    pin_mode(pinmap->mosi_pin, PullNone);
+    pin_mode(pinmap->mosi_pin, PullDown);  // Pull Down is set for output line
 
     pin_function(pinmap->miso_pin, pinmap->miso_function);
     pin_mode(pinmap->miso_pin, PullNone);
 
     pin_function(pinmap->sclk_pin, pinmap->sclk_function);
     pin_mode(pinmap->sclk_pin, PullNone);
+
     spiobj->pin_miso = pinmap->miso_pin;
     spiobj->pin_mosi = pinmap->mosi_pin;
     spiobj->pin_sclk = pinmap->sclk_pin;
@@ -273,9 +350,21 @@ static void _spi_init_direct(spi_t *obj, const spi_pinmap_t *pinmap)
     handle->Init.FirstBit          = SPI_FIRSTBIT_MSB;
     handle->Init.TIMode            = SPI_TIMODE_DISABLE;
 
-#if TARGET_STM32H7
-    handle->Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_ENABLE;
+#if defined (SPI_IP_VERSION_V2)
+    handle->Init.NSSPolarity = SPI_NSS_POLARITY_LOW;
+    handle->Init.MasterKeepIOState = SPI_MASTER_KEEP_IO_STATE_DISABLE;
     handle->Init.FifoThreshold     = SPI_FIFO_THRESHOLD_01DATA;
+    handle->Init.TxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+    handle->Init.RxCRCInitializationPattern = SPI_CRC_INITIALIZATION_ALL_ZERO_PATTERN;
+    handle->Init.MasterSSIdleness = SPI_MASTER_SS_IDLENESS_00CYCLE;
+    handle->Init.MasterInterDataIdleness = SPI_MASTER_INTERDATA_IDLENESS_00CYCLE;
+    handle->Init.MasterReceiverAutoSusp = SPI_MASTER_RX_AUTOSUSP_DISABLE;
+    handle->Init.IOSwap = SPI_IO_SWAP_DISABLE;
+#endif
+
+#if defined(SPI_RDY_MASTER_MANAGEMENT_INTERNALLY)
+    handle->Init.ReadyMasterManagement = SPI_RDY_MASTER_MANAGEMENT_INTERNALLY;
+    handle->Init.ReadyPolarity = SPI_RDY_POLARITY_HIGH;
 #endif
 
     /*
@@ -564,16 +653,21 @@ void spi_format(spi_t *obj, int bits, int mode, int slave)
         handle->Init.NSS = (slave) ? SPI_NSS_HARD_INPUT : SPI_NSS_HARD_OUTPUT;
     }
 
-    handle->Init.Mode = (slave) ? SPI_MODE_SLAVE : SPI_MODE_MASTER;
+    if (slave) {
+        handle->Init.Mode = SPI_MODE_SLAVE;
 
-    if (slave && (handle->Init.Direction == SPI_DIRECTION_1LINE)) {
-        /*  SPI slave implemtation in MBED does not support the 3 wires SPI.
-         *  (e.g. when MISO is not connected). So we're forcing slave in
-         *  2LINES mode. As MISO is not connected, slave will only read
-         *  from master, and cannot write to it. Inform user.
-         */
-        debug("3 wires SPI slave not supported - slave will only read\r\n");
-        handle->Init.Direction = SPI_DIRECTION_2LINES;
+        if (handle->Init.Direction == SPI_DIRECTION_1LINE) {
+            /*  SPI slave implemtation in MBED does not support the 3 wires SPI.
+             *  (e.g. when MISO is not connected). So we're forcing slave in
+             *  2LINES mode. As MISO is not connected, slave will only read
+             *  from master, and cannot write to it. Inform user.
+             */
+            debug("3 wires SPI slave not supported - slave will only read\r\n");
+            handle->Init.Direction = SPI_DIRECTION_2LINES;
+        }
+
+        pin_mode(spiobj->pin_mosi, PullNone);
+        pin_mode(spiobj->pin_miso, PullDown);  // Pull Down is set for output line
     }
 
     /*
@@ -639,7 +733,11 @@ static inline int ssp_readable(spi_t *obj)
     SPI_HandleTypeDef *handle = &(spiobj->handle);
 
     // Check if data is received
+#if defined(SPI_IP_VERSION_V2)
+    status = ((__HAL_SPI_GET_FLAG(handle, SPI_FLAG_RXP) != RESET) ? 1 : 0);
+#else
     status = ((__HAL_SPI_GET_FLAG(handle, SPI_FLAG_RXNE) != RESET) ? 1 : 0);
+#endif
     return status;
 }
 
@@ -650,7 +748,12 @@ static inline int ssp_writeable(spi_t *obj)
     SPI_HandleTypeDef *handle = &(spiobj->handle);
 
     // Check if data is transmitted
+#if defined(SPI_IP_VERSION_V2)
+    status = ((__HAL_SPI_GET_FLAG(handle, SPI_FLAG_TXP) != RESET) ? 1 : 0);
+#else
     status = ((__HAL_SPI_GET_FLAG(handle, SPI_FLAG_TXE) != RESET) ? 1 : 0);
+#endif
+
     return status;
 }
 
@@ -659,11 +762,11 @@ static inline int ssp_busy(spi_t *obj)
     int status;
     struct spi_s *spiobj = SPI_S(obj);
     SPI_HandleTypeDef *handle = &(spiobj->handle);
-#if TARGET_STM32H7
+#if defined(SPI_IP_VERSION_V2)
     status = ((__HAL_SPI_GET_FLAG(handle, SPI_FLAG_RXWNE) != RESET) ? 1 : 0);
-#else /* TARGET_STM32H7 */
+#else
     status = ((__HAL_SPI_GET_FLAG(handle, SPI_FLAG_BSY) != RESET) ? 1 : 0);
-#endif /* TARGET_STM32H7 */
+#endif
     return status;
 }
 
@@ -803,7 +906,7 @@ int spi_master_write(spi_t *obj, int value)
      *  but this will increase performances significantly
      */
 
-#if TARGET_STM32H7
+#if defined(SPI_IP_VERSION_V2)
     /* Master transfer start */
     LL_SPI_StartMasterTransfer(SPI_INST(obj));
 
@@ -813,7 +916,7 @@ int spi_master_write(spi_t *obj, int value)
     /* Wait TXE flag to transmit data */
     while (!LL_SPI_IsActiveFlag_TXE(SPI_INST(obj)));
 
-#endif /* TARGET_STM32H7 */
+#endif
 
     /* Transmit data */
     if (bitshift == 1) {
@@ -826,13 +929,13 @@ int spi_master_write(spi_t *obj, int value)
         LL_SPI_TransmitData8(SPI_INST(obj), (uint8_t)value);
     }
 
-#if TARGET_STM32H7
+#if defined(SPI_IP_VERSION_V2)
     /* Wait for RXP or end of Transfer */
     while (!LL_SPI_IsActiveFlag_RXP(SPI_INST(obj)));
-#else /* TARGET_STM32H7 */
+#else
     /* Wait for RXNE flag before reading */
     while (!LL_SPI_IsActiveFlag_RXNE(SPI_INST(obj)));
-#endif /* TARGET_STM32H7 */
+#endif
 
     /* Read received data */
     if (bitshift == 1) {
@@ -1003,7 +1106,7 @@ static int spi_master_start_asynch_transfer(spi_t *obj, transfer_type_t transfer
     NVIC_EnableIRQ(irq_n);
 
     // flush FIFO
-#if defined(SPI_FLAG_FRLVL) // STM32F0 STM32F3 STM32F7 STM32L4
+#if defined(SPI_FLAG_FRLVL)
     HAL_SPIEx_FlushRxFifo(handle);
 #endif
 
@@ -1068,11 +1171,10 @@ void spi_master_transfer(spi_t *obj, const void *tx, size_t tx_length, void *rx,
 
     obj->spi.event = event;
 
-    DEBUG_PRINTF("SPI: Transfer: %u, %u\n", tx_length, rx_length);
-
     // register the thunking handler
     IRQn_Type irq_n = spiobj->spiIRQ;
     NVIC_SetVector(irq_n, (uint32_t)handler);
+    DEBUG_PRINTF("SPI: Transfer: tx %u (%u), rx %u (%u), IRQ %u\n", use_tx, tx_length, use_rx, rx_length, irq_n);
 
     // enable the right hal transfer
     if (use_tx && use_rx) {
