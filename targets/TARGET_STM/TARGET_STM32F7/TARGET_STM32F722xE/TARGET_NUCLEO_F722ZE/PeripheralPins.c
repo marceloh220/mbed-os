@@ -431,3 +431,4 @@ MBED_WEAK const PinMap PinMap_USB_HS[] = {
 #endif /* MBED_CONF_TARGET_USB_SPEED */
     {NC, NC, 0}
 };
+
